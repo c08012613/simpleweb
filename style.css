@@ -1,6 +1,6 @@
 body {
     background: linear-gradient(to bottom, #ffffff, #d3d3d3);
-    animation: wave 5s infinite alternate;
+    animation: wave 10s infinite alternate ease-in-out; /* Increase duration and add easing */
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -15,10 +15,10 @@ body {
 }
 
 @keyframes wave {
-    from {
+    0%, 100% {
         background: linear-gradient(to bottom, #ffffff, #d3d3d3);
     }
-    to {
+    50% {
         background: linear-gradient(to bottom, #d3d3d3, #ffffff);
     }
 }
