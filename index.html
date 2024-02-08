@@ -1,30 +1,173 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shakespeare's Poetry123</title>
-    <link rel="stylesheet" href="style.css">
+    <title>LEMO FM</title>
+    <link rel="icon" href="favicon.ico">
+    <style>
+        @media only screen and (max-width: 600px) {
+            .slide-image {
+                width: 90vw;
+                height: auto;
+            }
+        }
+
+        @media only screen and (min-width: 601px) {
+            .slide-image {
+                width: 500px;
+                height: auto;
+            }
+        }
+
+        @media only screen and (max-width: 600px) {
+            .app-description {
+                width: 90vw;
+            }
+        }
+
+        @media only screen and (min-width: 601px) {
+            .app-description {
+                width: 700px;
+            }
+        }
+
+        @font-face {
+            font-family: 'sapCondensed-Medium';
+            src: url('font/AsapCondensed-Medium.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'AsapCondensed-Light';
+            src: url('font/AsapCondensed-Light.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            font-family: 'sapCondensed-Medium', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: linear-gradient(to right bottom, rgba(1, 227, 230, 0.18), rgba(211, 228, 230, 0));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .logo {
+            height: 50px;
+            margin-bottom: 25px;
+        }
+
+        .logo-container {
+            align-self: flex-start;
+        }
+
+        .container {
+            width: 80%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: auto;
+        }
+
+        .app-title {
+            font-size: 36px;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .app-description {
+            font-family: 'AsapCondensed-Light', sans-serif;
+            font-size: 20px;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .download-btns {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 66.66%;
+            gap: 10px;
+        }
+
+        .download-btn img {
+            width: 210px;
+            height: auto;
+        }
+
+        .footer {
+            position: static;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .slider .slide-image {
+            display: none;
+        }
+
+        .slider .slide-image.active {
+            display: block;
+        }
+
+        .flex-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 75px);
+        }
+    </style>
 </head>
+
 <body>
-    <div class="poetry">
-        <p>
-            Shall I compare thee to a summer's day?<br>
-            Thou art more lovely and more temperate:<br>
-            Rough winds do shake the darling buds of May,<br>
-            And summer's lease hath all too short a date:<br>
-            Sometime too hot the eye of heaven shines,<br>
-            And often is his gold complexion dimmed;<br>
-            And every fair from fair sometime declines,<br>
-            By chance or nature's changing course untrimmed;<br>
-            But thy eternal summer shall not fade<br>
-            Nor lose possession of that fair thou owest;<br>
-            Nor shall Death brag thou wanderest in his shade,<br>
-            When in eternal lines to time thou growest:<br>
-            So long as men can breathe or eyes can see,<br>
-            So long lives this, and this gives life to thee.
-        </p>
+    <div class="logo-container">
+        <img src="lemofm-logo.png" alt="LEMO FM Logo" class="logo">
     </div>
-    <script src="script.js"></script>
+    <div class="flex-wrapper">
+        <div class="container">
+            <div class="slider">
+                <img src="lemofm-dark-small-rain.png" alt="lemo fm screenshot" class="slide-image active" height="260px">
+                <img src="lemofm-dark-small-forest.png" alt="lemo fm screenshot" class="slide-image" height="260px">
+            </div>
+            <div class="app-title">LEMO FM</div>
+            <p class="app-description">LEMO FM is a minimalist white noise app designed to enhance sleep quality, reduce insomnia and anxiety, and promote overall well-being. By playing high-definition natural sounds, it helps users concentrate, relax, fall asleep faster, and develop healthier sleeping habits. </p>
+            <div class="download-btns">
+                <a href="https://apps.apple.com/us/app/lemo-fm-relax-focus-sleep/id6444756219" target="_blank" class="download-btn">
+                    <img src="apple-store.png" alt="App Store Button">
+                </a>
+                <a href="https://play.google.com/store/apps/details?id=com.lemo.lemofm" target="_blank" class="download-btn">
+                    <img src="google-play.png" alt="Google Play Button">
+                </a>
+            </div>
+        </div>
+    </div>
+    <script>
+        var slideIndex = 0;
+        var slideDuration = 1500;
+        var slideImages = document.getElementsByClassName("slide-image");
+
+        function changeSlide() {
+            slideImages[slideIndex].classList.remove("active");
+            slideIndex++;
+            if (slideIndex >= slideImages.length) {
+                slideIndex = 0;
+            }
+            slideImages[slideIndex].classList.add("active");
+        }
+
+        setInterval(changeSlide, slideDuration);
+    </script>
 </body>
+
 </html>
