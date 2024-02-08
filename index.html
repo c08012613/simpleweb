@@ -1,7 +1,5 @@
-
 <!DOCTYPE html>
-<html lang="zh-CN">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +11,9 @@
                 width: 90vw;
                 height: auto;
             }
+            .app-description {
+                width: 90vw;
+            }
         }
 
         @media only screen and (min-width: 601px) {
@@ -20,15 +21,6 @@
                 width: 500px;
                 height: auto;
             }
-        }
-
-        @media only screen and (max-width: 600px) {
-            .app-description {
-                width: 90vw;
-            }
-        }
-
-        @media only screen and (min-width: 601px) {
             .app-description {
                 width: 700px;
             }
@@ -48,35 +40,61 @@
             font-style: normal;
         }
 
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+
         body {
             font-family: 'sapCondensed-Medium', sans-serif;
-            margin: 0;
             padding: 0;
-            height: 100vh;
-            background: linear-gradient(to right bottom, rgba(1, 227, 230, 0.18), rgba(211, 228, 230, 0));
+            min-height: 100vh;
+            background: linear-gradient(-45deg, #f0f0f0, #ffffff, #f0f0f0, #9e9e9e);
+            background-size: 400% 400%;
+            animation: Gradient 8s ease infinite;
             display: flex;
             flex-direction: column;
+            justify-content: center;
+        }
+
+        .container {
+            max-height: 90vh;
+            overflow-y: auto;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Vertically centers content in the container */
+            justify-content: center; /* Add this line to horizontally center content as well */
+        }
+
+        
+        @keyframes Gradient {
+            0% { background-position: 0% 50%; }
+            25% { background-position: 100% 50%; }
+            50% { background-position: 0% 50%; }
+            75% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .logo-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        .footer {
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            display: flex;
+            justify-content: center;
             align-items: center;
-            position: relative;
-            background-size: cover;
-            background-repeat: no-repeat;
+            flex-direction: row;
+            padding: 10px 0;
         }
 
         .logo {
             height: 50px;
-            margin-bottom: 25px;
-        }
-
-        .logo-container {
-            align-self: flex-start;
-        }
-
-        .container {
-            width: 80%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            height: auto;
         }
 
         .app-title {
@@ -93,81 +111,30 @@
             margin-bottom: 10px;
         }
 
-        .download-btns {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 66.66%;
-            gap: 10px;
+        .footer-logo {
+            height: 30px;
+            margin-right: 10px;
         }
 
-        .download-btn img {
-            width: 210px;
-            height: auto;
-        }
-
-        .footer {
-            position: static;
-            margin-top: 30px;
-            text-align: center;
-        }
-
-        .slider .slide-image {
-            display: none;
-        }
-
-        .slider .slide-image.active {
-            display: block;
-        }
-
-        .flex-wrapper {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: calc(100vh - 75px);
+        .copyright {
+            font-size: 14px;
         }
     </style>
 </head>
-
 <body>
     <div class="logo-container">
         <img src="logo.png" alt="Logo" class="logo">
     </div>
-    <div class="flex-wrapper">
-        <div class="container">
-            <div class="slider">
-                <img src="lemofm-dark-small-rain.png" alt="lemo fm screenshot" class="slide-image active" height="260px">
-                <img src="lemofm-dark-small-forest.png" alt="lemo fm screenshot" class="slide-image" height="260px">
-            </div>
-            <div class="app-title">About Hikayo</div>
-            <p class="app-description">At Hikayo, we blend creativity with technology to create elegant apps that enrich lives. We're dedicated to designing digital experiences that elevate everyday moments, guiding you towards a more beautiful life. Our apps transform the ordinary into the extraordinary, embodying simplicity and grace. Welcome to Hikayo, where we make elegance a reality, one app at a time. </p>
-            <div class="download-btns">
-                <a href="https://apps.apple.com/us/app/lemo-fm-relax-focus-sleep/id6444756219" target="_blank" class="download-btn">
-                    <img src="apple-store.png" alt="App Store Button">
-                </a>
-                <a href="https://play.google.com/store/apps/details?id=com.lemo.lemofm" target="_blank" class="download-btn">
-                    <img src="google-play.png" alt="Google Play Button">
-                </a>
-            </div>
+    <div class="container">
+        <div class="slider">
+            <img src="bg.png" alt="screenshot" class="slide-image">
         </div>
+        <div class="app-title">About Hikayo</div>
+        <p class="app-description">At Hikayo, we blend creativity with technology to create elegant apps that enrich lives. We're dedicated to designing digital experiences that elevate everyday moments, guiding you towards a more beautiful life. Our apps transform the ordinary into the extraordinary, embodying simplicity and grace. Welcome to Hikayo, where we make elegance a reality, one app at a time.</p>
     </div>
-    <script>
-        var slideIndex = 0;
-        var slideDuration = 1500;
-        var slideImages = document.getElementsByClassName("slide-image");
-
-        function changeSlide() {
-            slideImages[slideIndex].classList.remove("active");
-            slideIndex++;
-            if (slideIndex >= slideImages.length) {
-                slideIndex = 0;
-            }
-            slideImages[slideIndex].classList.add("active");
-        }
-
-        setInterval(changeSlide, slideDuration);
-    </script>
+    <div class="footer">
+        <img src="logo.png" alt="Logo" class="footer-logo">
+        <p class="copyright">© 2024 Hikayo LLC</p>
+    </div>
 </body>
-
 </html>
