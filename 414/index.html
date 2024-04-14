@@ -11,11 +11,12 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            background: linear-gradient(to bottom right, #765837, #2B2014); /* 添加渐变背景 */
         }
         .card-container {
             perspective: 1000px;
-            width: 640px;
-            height: 480px;
+            width: 300px; /* 根据需要调整宽度 */
+            height: 450px; /* 根据需要调整高度 */
             position: relative;
             cursor: pointer;
         }
@@ -40,15 +41,17 @@
             font-size: 20px;
             color: white;
             box-sizing: border-box;
+            border-radius: 20px;
+            background-clip: padding-box;
         }
         .card-front {
             background: url('card_cover.png') no-repeat center center;
-            background-size: contain;
+            background-size: cover;
         }
         .card-back {
             transform: rotateY(180deg);
-            background: no-repeat center center;
-            background-size: contain;
+            background: url('card_bk.png') no-repeat center center;
+            background-size: cover;
         }
     </style>
 </head>
@@ -68,17 +71,6 @@
         document.querySelector('.card-container').addEventListener('click', function() {
             const card = this.querySelector('.card');
             card.classList.toggle('flipped');
-            if (!card.classList.contains('flipped')) {
-                return;
-            }
-            const images = [
-                '1.png', '2.png', '3.png', '4.png', '5.png',
-                '6.png', '7.png', '8.png', '9.png', '10.png',
-                '11.png', '12.png', '13.png', '14.png', '15.png', '16.png'
-            ]; // Updated list of images
-            const randomImage = images[Math.floor(Math.random() * images.length)];
-            const cardBack = document.getElementById('cardBack');
-            cardBack.style.backgroundImage = `url('cards/${randomImage}')`;
         });
     </script>
 </body>
