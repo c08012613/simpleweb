@@ -53,6 +53,15 @@
             transform: rotateY(180deg);
             background: url('card_bk.png') no-repeat center center;
             background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px; /* Adjusted font size */
+            color: #333; /* Dark gray color */
+        }
+        .text-content {
+            padding: 20px;
+            text-align: center; /* Center the text horizontally */
         }
     </style>
 </head>
@@ -63,15 +72,37 @@
                 <!-- Optional front content -->
             </div>
             <div class="card-face card-back" id="cardBack">
-                <!-- Background set by CSS -->
+                <div class="text-content"> <!-- This will contain the random text -->
+                    <!-- Text set by JavaScript -->
+                </div>
             </div>
         </div>
     </div>
 
     <script>
+        const phrases = [
+            "Life is what happens when you're busy making other plans.",
+            "Get busy living or get busy dying.",
+            "You only live once, but if you do it right, once is enough.",
+            "Many of life’s failures are people who did not realize how close they were to success when they gave up.",
+            "If you want to live a happy life, tie it to a goal, not to people or things.",
+            "Never let the fear of striking out keep you from playing the game.",
+            "Money and success don’t change people; they merely amplify what is already there.",
+            "Your time is limited, don’t waste it living someone else’s life.",
+            "Not how long, but how well you have lived is the main thing.",
+            "If life were predictable it would cease to be life, and be without flavor."
+        ];
+
+
+
         document.querySelector('.card-container').addEventListener('click', function() {
             const card = this.querySelector('.card');
             card.classList.toggle('flipped');
+            if (card.classList.contains('flipped')) {
+                const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+                const textContent = document.querySelector('.text-content');
+                textContent.textContent = randomPhrase;
+            }
         });
     </script>
 </body>
