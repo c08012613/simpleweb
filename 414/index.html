@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Card Flip Effect</title>
-    <link rel="preload" href="card_bk.png" as="image">  <!-- 预加载 card_bk.png 图像 -->
+    <link rel="preload" href="card_bk.png" as="image">
     <style>
         body {
             display: flex;
@@ -12,12 +12,12 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background: linear-gradient(to bottom right, #765837, #2B2014); /* 添加渐变背景 */
+            background: linear-gradient(to bottom right, #765837, #2B2014);
         }
         .card-container {
             perspective: 1000px;
-            width: 300px; /* 根据需要调整宽度 */
-            height: 450px; /* 根据需要调整高度 */
+            width: 300px;
+            height: 450px;
             position: relative;
             cursor: pointer;
         }
@@ -37,6 +37,7 @@
             height: 100%;
             backface-visibility: hidden;
             display: flex;
+            flex-direction: column; /* Align children vertically */
             align-items: center;
             justify-content: center;
             font-size: 20px;
@@ -53,15 +54,18 @@
             transform: rotateY(180deg);
             background: url('card_bk.png') no-repeat center center;
             background-size: cover;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px; /* Adjusted font size */
-            color: #333; /* Dark gray color */
+        }
+        .title {
+            font-size: 16px; /* Title font size */
+            font-weight: bold;
+            padding: 10px;
+            color: #333; /* 深灰色文字 */
         }
         .text-content {
+            font-size: 14px; /* Smaller font size for content */
             padding: 20px;
-            text-align: center; /* Center the text horizontally */
+            text-align: center;
+            color: #333; /* 深灰色文字 */
         }
     </style>
 </head>
@@ -72,6 +76,9 @@
                 <!-- Optional front content -->
             </div>
             <div class="card-face card-back" id="cardBack">
+                <div class="title"> <!-- This will contain the title -->
+                    <!-- Title set by JavaScript -->
+                </div>
                 <div class="text-content"> <!-- This will contain the random text -->
                     <!-- Text set by JavaScript -->
                 </div>
@@ -81,27 +88,35 @@
 
     <script>
         const phrases = [
-            "Life is what happens when you're busy making other plans.",
-            "Get busy living or get busy dying.",
-            "You only live once, but if you do it right, once is enough.",
-            "Many of life’s failures are people who did not realize how close they were to success when they gave up.",
-            "If you want to live a happy life, tie it to a goal, not to people or things.",
-            "Never let the fear of striking out keep you from playing the game.",
-            "Money and success don’t change people; they merely amplify what is already there.",
-            "Your time is limited, don’t waste it living someone else’s life.",
-            "Not how long, but how well you have lived is the main thing.",
-            "If life were predictable it would cease to be life, and be without flavor."
+            { title: "不爽的人或物", content: "出门散步，找到4个你看着很不爽的人/物品，拍照然后就回家。" },
+            { title: "编写咒语", content: "为自己编写一条咒语。可以用任何既存的语言、文字，也可以创造出你自己的音节组合，为祂赋予你的魔法。" },
+            { title: "所有的名字", content: "写出自己的所有名字、大名、小名、网名、昵称••过去的、现在的、想过要用的然而放弃的……在所有名字旁边，写出相关的使用者。如有的话，也可以补充和这个名字/称呼之间的一个回忆碎片。" },
+            { title: "给树取名", content: "出门寻找一棵你喜欢的树，给祂起一个名字。从今天起你们就是朋友了。" },
+            { title: "加密名字", content: "用任何一种规则加密你的名字。（e.g.i••.= 阿诗）" },
+            { title: "一样重的它们", content: "随手拿起离你手最近的物体，去整个屋子里找8 件跟它一样重的物体，一字排开拍一张照记录。" },
+            { title: "不会说话的它", content: "找一个不会说话的物体，虚构一个它沟通的方式。用那个方式跟它沟通，然后把沟通过程用文字记录下来展示给其他人。" },
+            { title: "不看镜子化妆", content: "不看镜子给自己化妆（男生女生都适用）。" },
+            { title: "公园散步", content: "去附近的公园散步 30分钟。" },
+            { title: "书和笔记", content: "看书 30 分钟并写3条笔记。" },
+            { title: "做一顿饭", content: "给自己做一顿饭。" },
+            { title: "问问近况", content: "联系一个 5 年没联系的朋友，问问近况。" },
+            { title: "倒立", content: "倒立1分钟。" },
+            { title: "关机", content: "关机3小时 or 一天。" },
+            { title: "扔东西", content: "扔掉家里的一件物品（非垃圾），并写一首诗。" },
+            { title: "草坪打滚", content: "在草坪上打滚。" }
         ];
-
 
 
         document.querySelector('.card-container').addEventListener('click', function() {
             const card = this.querySelector('.card');
             card.classList.toggle('flipped');
             if (card.classList.contains('flipped')) {
-                const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
-                const textContent = document.querySelector('.text-content');
-                textContent.textContent = randomPhrase;
+                const phraseIndex = Math.floor(Math.random() * phrases.length);
+                const titleElement = document.querySelector('.title');
+                const textContentElement = document.querySelector('.text-content');
+                
+                titleElement.textContent = phrases[phraseIndex].title;
+                textContentElement.textContent = phrases[phraseIndex].content;
             }
         });
     </script>
