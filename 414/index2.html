@@ -67,7 +67,23 @@
         </div>
     </div>
 
-    <script>
+<script>
+        // 预加载图片函数
+        function preloadImages() {
+            const images = [
+                '1.png', '2.png', '3.png', '4.png', '5.png',
+                '6.png', '7.png', '8.png', '9.png', '10.png',
+                '11.png', '12.png', '13.png', '14.png', '15.png', '16.png'
+            ];
+            images.forEach(image => {
+                const img = new Image();
+                img.src = `cards/${image}`;
+            });
+        }
+
+        // 在页面加载时预加载所有图片
+        window.addEventListener('load', preloadImages);
+
         document.querySelector('.card-container').addEventListener('click', function() {
             const card = this.querySelector('.card');
             card.classList.toggle('flipped');
