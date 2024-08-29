@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chris' Pomodoro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 30px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            width: 400px;
+        }
+        #tomato {
+            font-size: 150px;
+            margin-bottom: 10px;
+        }
+        h1 {
+            margin: 0 0 20px 0;
+            color: #444;
+            font-size: 32px;
+        }
+        #timer {
+            font-size: 64px;
+            margin-bottom: 30px;
+            color: #555;  /* 深灰色 */
+        }
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        button {
+            font-size: 18px;
+            padding: 15px 0;
+            margin: 10px 0;
+            cursor: pointer;
+            border: none;
+            border-radius: 50px;
+            background-color: #ff6347;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #e55a3c;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        #startBtn {
+            font-size: 24px;
+            width: 100%;
+        }
+        .button-row {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+        #pauseBtn, #resetBtn {
+            width: 48%;
+        }
+        .time-input-container {
+            margin: 20px 0; /* 添加上下间距 */
+            width: 100%; /* 使其占满宽度 */
+        }
+        #timeInput {
+            height: 40px; /* 增加输入框高度 */
+            border-radius: 10px; /* 圆角 */
+            font-size: 18px; /* 增加字体大小 */
+        }
+        button {
+            /* ... existing button styles ... */
+            width: 100%; /* 修改按钮宽度 */
+            padding: 20px 0; /* 增加按钮高度 */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="tomato">🍅</div>
+        <h1>Chris' Pomodoro</h1>
+        <div id="timer">25:00</div>
+        <div class="button-container">
+            <button id="startBtn" onclick="startTimer()">开始</button>
+            <div class="button-row">
+                <button id="pauseBtn" onclick="pauseTimer()">暂停</button>
+                <button id="resetBtn" onclick="resetTimer()">重置</button>
+            </div>
+<!--             <div class="time-input-container"> 
+                     <label for="timeInput">设置时间（分钟）:</label>
+                <input type="number" id="timeInput" value="25" min="1" />
+                <button onclick="setTimer()">设置</button>
+            </div> --> 
+        </div>
+    </div>
+
+    <script>
+        let timer;
+        let timeLeft = 25 * 60;
+        let isRunning = false;
+        const startBtn = document.getElementById('startBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const resetBtn = document.getElementById('resetBtn');
+
+        function updateDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timer').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            if (!isRunning) {
+                isRunning = true;
+                timer = setInterval(() => {
+                    if (timeLeft > 0) {
+                        timeLeft--;
+                        updateDisplay();
+                    } else {
+                        clearInterval(timer);
+                        isRunning = false;
+                        alert('时间到！');
+                        resetTimer();
+                    }
+                }, 1000);
+                startBtn.disabled = true;
+                pauseBtn.disabled = false;
+                resetBtn.disabled = false;
+            }
+        }
+
+        function pauseTimer() {
+            clearInterval(timer);
+            isRunning = false;
+            startBtn.disabled = false;
+            pauseBtn.disabled = true;
+            resetBtn.disabled = false;
+        }
+
+        function resetTimer() {
+            clearInterval(timer);
+            isRunning = false;
+            timeLeft = 25 * 60;
+            updateDisplay();
+            startBtn.disabled = false;
+            pauseBtn.disabled = true;
+            resetBtn.disabled = true;
+        }
+
+        updateDisplay();
+        pauseBtn.disabled = true;
+        resetBtn.disabled = true;
+    </script>
+</body>
+</html>
