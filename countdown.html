@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>全屏计时器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            /* background-color: #000; */ /* Black background */
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); /* Dark blue gradient */
+            color: #fff; /* White text */
+            touch-action: manipulation;
+            position: relative; /* Needed for absolute positioning of controls */
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center vertically */
+            align-items: center;
+            height: 100%;
+            /* padding: 20px; Remove padding to maximize space */
+        }
+        
+        .timer {
+            font-size: 35vh; /* Make font size relative to viewport height - This will be base for minutes */
+            font-weight: 500; /* Increase from 200 to 500 for bolder text */
+            margin-bottom: -5vh; /* Pull total time closer */
+            display: flex;
+            flex-direction: column; /* Stack items vertically */
+            align-items: center; /* Center items horizontally */
+            justify-content: center; /* Center items vertically */
+            white-space: nowrap;
+            line-height: 1; /* Adjust line height for vertical stacking */
+            text-align: center;
+        }
+        
+        .time-line {
+            display: inline-flex; /* Use flex for alignment */
+            align-items: baseline; /* Align minutes and seconds */
+            line-height: 1; /* Match parent line height */
+            color: #e0fbfc; /* Default bright cyan/teal for timer text */
+            text-shadow: 0 0 10px rgba(64, 224, 208, 0.5); /* Subtle glow */
+            font-weight: 500; /* Make text bolder */
+        }
+        
+        /* Dim the total time slightly */
+        .time-line:last-child {
+             color: #98c1d9; /* Lighter, less saturated blue */
+             opacity: 0.8;
+             text-shadow: none; /* No glow for total time */
+        }
+        
+        .time-separator {
+            font-size: 0.6em; /* Smaller colon relative to minutes */
+            margin: 0 0.05em; /* Adjust spacing around colon */
+            /* align-self: center; */ /* Baseline alignment might be better */
+        }
+        
+        .seconds {
+            font-size: 12vh; /* Smaller font size for seconds (~1/3 of 35vh) */
+            font-weight: 500; /* Match timer weight or adjust */
+        }
+        
+        .controls {
+            /* display: none; Hide the controls */
+            display: flex; /* Use flex again */
+            flex-direction: column;
+            width: 95vw; /* Make width almost full viewport */
+            max-width: 1000px; /* Further increase max width */
+            position: absolute; /* Position absolutely */
+            top: 50%; /* Center vertically */
+            left: 50%; /* Center horizontally */
+            transform: translate(-50%, -50%); /* Precise centering */
+            background-color: rgba(26, 26, 46, 0.8); /* Darker background, match gradient */
+            padding: 50px; /* Increase padding even more */
+            border-radius: 30px; /* Larger border radius */
+            opacity: 0; /* Hidden by default */
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 10; /* Ensure controls are on top */
+            backdrop-filter: blur(10px); /* Frosted glass effect */
+            -webkit-backdrop-filter: blur(10px); /* For Safari */
+            box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 ); /* Subtle shadow */
+            border: 1px solid rgba(255, 255, 255, 0.18); /* Subtle border */
+        }
+        
+        .preset-buttons {
+            display: flex;
+            flex-wrap: wrap; /* Allow wrapping to create two rows */
+            width: 100%;
+            margin-bottom: 30px; /* Space below presets */
+            border-radius: 15px; /* Large border radius for the entire container */
+            overflow: hidden; /* Ensure content doesn't overflow rounded corners */
+            border: 1px solid rgba(152, 193, 217, 0.4);
+        }
+        
+        /* Styles for showing controls */
+        body.show-controls .controls {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .time-inputs {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px; /* Adjusted margin */
+        }
+        
+        .time-input {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .time-input label {
+            margin-bottom: 8px; /* Adjusted margin */
+            font-size: 24px; /* Increase font size again */
+            opacity: 0.8;
+            font-weight: 500; /* Make labels bolder */
+        }
+        
+        .time-input-group {
+            display: flex;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(152, 193, 217, 0.3);
+            background-color: rgba(152, 193, 217, 0.1);
+        }
+        
+        .time-btn {
+            width: 70px;
+            height: 90px;
+            background-color: rgba(152, 193, 217, 0.2);
+            color: #e0fbfc;
+            font-size: 36px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        
+        .time-btn:active {
+            transform: scale(0.95);
+            background-color: rgba(152, 193, 217, 0.5);
+        }
+        
+        .time-btn:hover {
+            background-color: rgba(152, 193, 217, 0.4);
+        }
+        
+        .time-input input {
+            width: 130px; /* Increase width again */
+            height: 90px; /* Increase height again */
+            background-color: rgba(152, 193, 217, 0.1); /* Subtle blue background */
+            border: none;
+            color: #e0fbfc; /* Match bright text color */
+            font-size: 36px; /* Increase font size again */
+            text-align: center;
+            padding: 10px; /* Increase padding */
+            font-weight: 500; /* Increase from 300 to 500 for bolder input numbers */
+        }
+        
+        .preset-button {
+            flex: 1 0 33.333%; /* Three buttons per row: 33.333% width with no shrinking */
+            padding: 15px 5px;
+            font-size: 18px; /* Increased font size */
+            background-color: rgba(152, 193, 217, 0.2);
+            color: #e0fbfc;
+            cursor: pointer;
+            text-align: center; /* Ensure text is centered */
+            transition: background-color 0.2s, transform 0.1s;
+            border: none;
+            border-right: 1px solid rgba(152, 193, 217, 0.4); /* Divider between buttons */
+            border-bottom: 1px solid rgba(152, 193, 217, 0.4); /* Divider for rows */
+            border-radius: 0; /* Remove individual button border radius */
+            font-weight: 500; /* Make preset buttons bolder */
+        }
+        
+        /* Remove right border for every 3rd button */
+        .preset-button:nth-child(3n) {
+            border-right: none;
+        }
+        
+        /* Remove bottom border for last row */
+        .preset-button:nth-child(4),
+        .preset-button:nth-child(5),
+        .preset-button:nth-child(6) {
+            border-bottom: none;
+        }
+        
+        .preset-button:active {
+            transform: scale(0.95);
+            background-color: rgba(152, 193, 217, 0.5);
+        }
+        
+        .preset-button:hover {
+            background-color: rgba(152, 193, 217, 0.4);
+        }
+        
+        .time-input input:focus {
+            outline: none;
+            border-color: rgba(64, 224, 208, 0.7); /* Highlight border on focus */
+            box-shadow: 0 0 8px rgba(64, 224, 208, 0.5); /* Subtle glow on focus */
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: space-between; /* Change from space-around to space-between */
+            width: 100%; /* Ensure full width */
+            gap: 20px; /* Add gap between buttons */
+        }
+        
+        button {
+            flex: 1; /* Make buttons flex to fill available space equally */
+            height: 90px; /* Increase height again */
+            border: none;
+            border-radius: 15px; /* Match the border-radius of preset buttons container */
+            font-size: 28px; /* Increase font size again */
+            font-weight: 600; /* Increase from 500 to 600 for even bolder buttons */
+            color: #ffffff;
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.2s;
+        }
+        
+        button:active {
+            transform: scale(0.95);
+        }
+        
+        #startBtn {
+            /* background-color: #4cd964; */
+            background: linear-gradient(45deg, #2a9d8f, #4ecdc4); /* Greenish gradient */
+            /* color: white; */
+        }
+        
+        #resetBtn {
+            /* background-color: #ff3b30; */
+            background: linear-gradient(45deg, #e76f51, #f4a261); /* Orange/Red gradient */
+            /* color: white; */
+        }
+        
+        .paused {
+            /* background-color: #ff9500 !important; */
+            background: linear-gradient(45deg, #fca311, #ffb703) !important; /* Yellow/Orange gradient for paused */
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="container">
+        <div class="timer" id="timer">
+            <span class="time-line">
+                <span id="currentMinutes">00</span><span class="time-separator">:</span><span id="currentSeconds" class="seconds">00</span>
+            </span>
+            <span class="time-line">
+                <span id="totalMinutes">00</span><span class="time-separator">:</span><span id="totalSeconds" class="seconds">00</span>
+            </span>
+        </div>
+        
+        <div class="controls" id="controls">
+            <div class="time-inputs">
+                <div class="time-input">
+                    <label>分钟</label>
+                    <div class="time-input-group">
+                        <button class="time-btn" id="minDecrease">-</button>
+                        <input type="number" id="minutes" min="0" max="59" value="0">
+                        <button class="time-btn" id="minIncrease">+</button>
+                    </div>
+                </div>
+                <div class="time-input">
+                    <label>秒钟</label>
+                    <div class="time-input-group">
+                        <button class="time-btn" id="secDecrease">-</button>
+                        <input type="number" id="seconds" min="0" max="59" value="0">
+                        <button class="time-btn" id="secIncrease">+</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="preset-buttons">
+                <button class="preset-button" data-minutes="5">5 分钟</button>
+                <button class="preset-button" data-minutes="10">10 分钟</button>
+                <button class="preset-button" data-minutes="15">15 分钟</button>
+                <button class="preset-button" data-minutes="20">20 分钟</button>
+                <button class="preset-button" data-minutes="25">25 分钟</button>
+                <button class="preset-button" data-minutes="30">30 分钟</button>
+            </div>
+            
+            <div class="buttons">
+                <button id="startBtn">开始</button>
+                <button id="resetBtn">重置</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentMinutesEl = document.getElementById('currentMinutes');
+            const currentSecondsEl = document.getElementById('currentSeconds');
+            const totalMinutesEl = document.getElementById('totalMinutes');
+            const totalSecondsEl = document.getElementById('totalSeconds');
+            const minutesInput = document.getElementById('minutes');
+            const secondsInput = document.getElementById('seconds');
+            const startBtn = document.getElementById('startBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const presetButtonsContainer = document.querySelector('.preset-buttons');
+            const containerEl = document.getElementById('container'); // Get container element
+            
+            let timerInterval;
+            let currentSeconds = 0;
+            let totalSeconds = 0;
+            let isRunning = false;
+            
+            // 更新显示的时间 (MM:SS format)
+            function updateDisplay() {
+                // Calculate current time display
+                const currentMinutesValue = Math.floor(currentSeconds / 60);
+                const currentSecondsValue = currentSeconds % 60;
+                
+                // Calculate total time display
+                const totalMinutesValue = Math.floor(totalSeconds / 60);
+                const totalSecondsValue = totalSeconds % 60;
+                
+                // Update current time display
+                currentMinutesEl.textContent = currentMinutesValue.toString().padStart(2, '0');
+                currentSecondsEl.textContent = currentSecondsValue.toString().padStart(2, '0');
+                
+                // Update total time display
+                totalMinutesEl.textContent = totalMinutesValue.toString().padStart(2, '0');
+                totalSecondsEl.textContent = totalSecondsValue.toString().padStart(2, '0');
+            }
+            
+            // 开始或暂停计时
+            function toggleTimer() {
+                if (!isRunning) {
+                    // Hide controls when starting/resuming
+                    document.body.classList.remove('show-controls');
+
+                    if (currentSeconds === 0) {
+                        // 读取总时间设置 (Minutes and Seconds only)
+                        totalSeconds = 
+                            parseInt(minutesInput.value || 0) * 60 + 
+                            parseInt(secondsInput.value || 0);
+                        
+                        if (totalSeconds <= 0) return;
+                        // Set initial display based on totalSeconds
+                        updateDisplay(); 
+                    }
+                    
+                    isRunning = true;
+                    startBtn.textContent = '暂停';
+                    startBtn.classList.add('paused');
+                    
+                    timerInterval = setInterval(() => {
+                        currentSeconds++;
+                        updateDisplay();
+                        
+                        if (currentSeconds >= totalSeconds) {
+                            clearInterval(timerInterval);
+                            isRunning = false;
+                            startBtn.textContent = '开始';
+                            startBtn.classList.remove('paused');
+                            
+                            // 计时结束时播放提示音
+                            let audio = new Audio('data:audio/wav;base64,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');
+                            audio.play();
+                        }
+                    }, 1000);
+                } else {
+                    clearInterval(timerInterval);
+                    isRunning = false;
+                    startBtn.textContent = '继续';
+                    startBtn.classList.add('paused');
+                }
+            }
+            
+            // 重置计时器
+            function resetTimer() {
+                clearInterval(timerInterval);
+                isRunning = false;
+                currentSeconds = 0;
+                
+                // Set input fields to 0
+                minutesInput.value = 0;
+                secondsInput.value = 0;
+                
+                // Reset totalSeconds to 0
+                totalSeconds = 0;
+                
+                startBtn.textContent = '开始';
+                startBtn.classList.remove('paused');
+                updateDisplay(); // Update display after reset
+            }
+            
+            // Set time from preset buttons
+            function setPresetTime(minutes) {
+                clearInterval(timerInterval); // Stop if running
+                isRunning = false;
+                currentSeconds = 0; // Reset current time
+
+                minutesInput.value = minutes;
+                secondsInput.value = 0;
+
+                totalSeconds = minutes * 60;
+
+                startBtn.textContent = '开始';
+                startBtn.classList.remove('paused');
+                updateDisplay(); // Update display with new total time
+            }
+            
+            // 防止输入负数和格式化输入值
+            function validateInput(input, max) {
+                let value = parseInt(input.value) || 0;
+                if (value < 0) value = 0;
+                if (value > max) value = max;
+                input.value = value;
+                // Update total time display immediately when inputs change
+                totalSeconds = 
+                    parseInt(minutesInput.value || 0) * 60 + 
+                    parseInt(secondsInput.value || 0);
+                if (!isRunning) { // Only update display if timer is not running
+                     updateDisplay();
+                }
+            }
+            
+            // 事件监听
+            startBtn.addEventListener('click', toggleTimer);
+            resetBtn.addEventListener('click', resetTimer);
+            
+            // Add increment/decrement handlers for minutes
+            document.getElementById('minDecrease').addEventListener('click', function() {
+                let value = parseInt(minutesInput.value) || 0;
+                if (value > 0) {
+                    minutesInput.value = value - 1;
+                    validateInput(minutesInput, 59);
+                }
+            });
+            
+            document.getElementById('minIncrease').addEventListener('click', function() {
+                let value = parseInt(minutesInput.value) || 0;
+                if (value < 59) {
+                    minutesInput.value = value + 1;
+                    validateInput(minutesInput, 59);
+                }
+            });
+            
+            // Add increment/decrement handlers for seconds
+            document.getElementById('secDecrease').addEventListener('click', function() {
+                let value = parseInt(secondsInput.value) || 0;
+                if (value > 0) {
+                    secondsInput.value = value - 1;
+                    validateInput(secondsInput, 59);
+                }
+            });
+            
+            document.getElementById('secIncrease').addEventListener('click', function() {
+                let value = parseInt(secondsInput.value) || 0;
+                if (value < 59) {
+                    secondsInput.value = value + 1;
+                    validateInput(secondsInput, 59);
+                }
+            });
+            
+            minutesInput.addEventListener('change', () => validateInput(minutesInput, 59));
+            minutesInput.addEventListener('input', () => validateInput(minutesInput, 59)); // Also validate on input
+            secondsInput.addEventListener('change', () => validateInput(secondsInput, 59));
+            secondsInput.addEventListener('input', () => validateInput(secondsInput, 59)); // Also validate on input
+            
+            // Add event listeners for preset buttons
+            presetButtonsContainer.addEventListener('click', function(event) {
+                if (event.target.classList.contains('preset-button')) {
+                    const minutes = parseInt(event.target.getAttribute('data-minutes'));
+                    if (!isNaN(minutes)) {
+                        setPresetTime(minutes);
+                    }
+                }
+            });
+            
+            // 初始显示 (based on default input values)
+             totalSeconds = 
+                parseInt(minutesInput.value || 0) * 60 + 
+                parseInt(secondsInput.value || 0);
+            updateDisplay();
+            
+            // 阻止双击缩放
+            document.addEventListener('dblclick', function(e) {
+                e.preventDefault();
+            });
+            
+            // Toggle controls visibility on container click
+            containerEl.addEventListener('click', function(event) {
+                // Prevent toggling if click is inside the controls area itself
+                // Allow clicks on buttons inside controls to proceed
+                if (event.target.closest('.controls') && event.target.id !== 'container') {
+                    return;
+                }
+                document.body.classList.toggle('show-controls');
+            });
+            
+            // 阻止iOS长按出现magnifying glass (apply only outside controls)
+            // document.addEventListener('touchstart', function(e) {
+            //     if (!e.target.closest('.controls')) {
+            //         e.preventDefault();
+            //     }
+            // }, {passive: false}); // Consider removing or adjusting this if it interferes with button presses
+            
+            // 在iOS上请求全屏
+            document.addEventListener('click', function() {
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                } else if (document.documentElement.webkitRequestFullscreen) {
+                    document.documentElement.webkitRequestFullscreen();
+                }
+            }, {once: true});
+        });
+    </script>
+</body>
+</html>
