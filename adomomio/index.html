@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>a domo mio | 阿多米多 - 优质家居用品</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Noto+Sans:wght@300;400;500&family=Noto+Serif+JP:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans', "Helvetica Neue", Arial, sans-serif;
+            color: #333;
+            background-color: #f8f8f6;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 导航栏 */
+        header {
+            background-color: #ffffff;
+            padding: 20px 0;
+            border-bottom: 1px solid #eaeaea;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 36px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            font-family: 'Indie Flower', cursive;
+        }
+        
+        .logo a {
+            text-decoration: none;
+            color: #333;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 40px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #9b9b9b;
+        }
+        
+        /* 英雄区 */
+        .hero {
+            height: 90vh;
+            background-image: url('022-overseas-70-senbo-yang.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            text-align: center;
+            padding: 0 20px;
+        }
+        
+        .hero-content {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 50px;
+            max-width: 600px;
+            color: #333;
+        }
+        
+        .hero h1 {
+            font-size: 36px;
+            font-weight: 300;
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+            font-family: 'Indie Flower', cursive;
+        }
+        
+        .hero p {
+            font-size: 16px;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #333;
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #555;
+        }
+        
+        /* 品牌理念 */
+        .philosophy {
+            padding: 100px 0;
+            text-align: center;
+            background-color: #ffffff;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            font-weight: 300;
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+            font-family: 'Indie Flower', cursive;
+        }
+        
+        .philosophy-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .philosophy p {
+            margin-bottom: 20px;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+        
+        /* 产品类别 */
+        .categories {
+            padding: 100px 0;
+            background-color: #f8f8f6;
+        }
+        
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .category-item {
+            position: relative;
+            height: 400px;
+            overflow: hidden;
+        }
+        
+        .category-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .category-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .category-title {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: 1px;
+            font-family: 'Indie Flower', cursive;
+        }
+        
+        /* 精选产品 */
+        .featured-products {
+            padding: 100px 0;
+            background-color: #ffffff;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+        
+        .product-item {
+            text-align: center;
+        }
+        
+        .product-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+        
+        .product-title {
+            font-size: 16px;
+            font-weight: 300;
+            margin-bottom: 10px;
+            font-family: 'Indie Flower', cursive;
+        }
+        
+        .product-price {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        /* 可持续发展 */
+        .sustainability {
+            padding: 100px 0;
+            background-color: #f8f8f6;
+            text-align: center;
+        }
+        
+        .sustainability-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .sustainability-icons {
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+        }
+        
+        .sustainability-icon {
+            text-align: center;
+            margin: 0 30px;
+        }
+        
+        .sustainability-icon svg {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 15px;
+            fill: #6d6d6d;
+            transition: fill 0.3s ease;
+        }
+        
+        .sustainability-icon:hover svg {
+            fill: #333;
+        }
+        
+        .sustainability-icon p {
+            font-size: 14px;
+        }
+        
+        /* 页脚 */
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 16px;
+            font-weight: 300;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            font-family: 'Indie Flower', cursive;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column a {
+            color: #ddd;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+        
+        .footer-column a:hover {
+            color: #fff;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #444;
+            font-size: 14px;
+            color: #999;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                height: 70vh;
+            }
+            
+            .hero-content {
+                padding: 30px;
+            }
+            
+            .hero h1 {
+                font-size: 28px;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .categories-grid,
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <a href="#">a domo mio</a>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#">主页</a></li>
+                    <li><a href="#">产品</a></li>
+                    <li><a href="#">关于我们</a></li>
+                    <li><a href="#">可持续发展</a></li>
+                    <li><a href="#">联系我们</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 英雄区 -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>质朴自然，温柔如家</h1>
+            <p>阿多米多用环保材料和精湛工艺，为您打造舒适温馨的家居空间。每一款产品都倾注我们对简约生活的热爱。</p>
+            <a href="#" class="btn">探索产品</a>
+        </div>
+    </section>
+
+    <!-- 品牌理念 -->
+    <section class="philosophy">
+        <div class="container">
+            <h2 class="section-title">品牌理念</h2>
+            <div class="philosophy-content">
+                <p>阿多米多源于对简单生活方式的追求，我们相信真正的舒适源于自然与和谐。每一件产品都经过精心设计，注重细节与实用性，为您提供既美观又实用的家居体验。</p>
+                <p>我们的设计灵感来自于田园风光与自然元素，选用优质天然材料，确保每一件产品都能带给您最纯粹的触感与最安心的使用体验。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 产品类别 -->
+    <section class="categories">
+        <div class="container">
+            <h2 class="section-title">产品系列</h2>
+            <div class="categories-grid">
+                <div class="category-item">
+                    <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80" alt="床品系列">
+                    <h3 class="category-title">床品系列</h3>
+                </div>
+                <div class="category-item">
+                    <img src="https://images.unsplash.com/photo-1620574387735-3624d75b2dbc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="毛巾浴巾">
+                    <h3 class="category-title">毛巾浴巾</h3>
+                </div>
+                <div class="category-item">
+                    <img src="https://images.unsplash.com/photo-1616046229478-9901c5536a45?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1980&q=80" alt="家居装饰">
+                    <h3 class="category-title">家居装饰</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 精选产品 -->
+    <section class="featured-products">
+        <div class="container">
+            <h2 class="section-title">精选产品</h2>
+            <div class="products-grid">
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1582558552701-1ce58c38dbea?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1964&q=80" alt="有机棉被套">
+                    <h3 class="product-title">有机棉被套</h3>
+                    <p class="product-price">¥499</p>
+                </div>
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1600369671738-fa3a43efeced?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" alt="亚麻床单">
+                    <h3 class="product-title">亚麻床单</h3>
+                    <p class="product-price">¥399</p>
+                </div>
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1092&q=80" alt="纯棉枕套">
+                    <h3 class="product-title">纯棉枕套</h3>
+                    <p class="product-price">¥199</p>
+                </div>
+                <div class="product-item">
+                    <img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80" alt="浴巾套装">
+                    <h3 class="product-title">浴巾套装</h3>
+                    <p class="product-price">¥259</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 可持续发展 -->
+    <section class="sustainability">
+        <div class="container">
+            <h2 class="section-title">可持续发展</h2>
+            <div class="sustainability-content">
+                <p>阿多米多致力于降低环境影响，我们的产品采用有机认证的材料，生产过程注重节能减排，包装材料全部可回收或可降解。</p>
+                <div class="sustainability-icons">
+                    <div class="sustainability-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M12,2L4.5,20.29L5.21,21L12,18L18.79,21L19.5,20.29L12,2Z M12,6.5L13.5,11H10.5L12,6.5Z M12,15L10,14L14,14L12,15Z"/>
+                        </svg>
+                        <p>有机材料</p>
+                    </div>
+                    <div class="sustainability-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M12,4C14.1,4 16.1,4.8 17.6,6.3C20.7,9.4 20.7,14.5 17.6,17.6C15.8,19.5 13.3,20.2 10.9,19.9L11.4,17.9C13.1,18.1 14.9,17.5 16.2,16.2C18.5,13.9 18.5,10.1 16.2,7.7C15.1,6.6 13.5,6 12,6V10.6L7,5.6L12,0.6V4M6.3,17.6C3.7,15 3.3,11 5.1,7.9L6.6,9.4C5.5,11.6 5.9,14.4 7.8,16.2C8.3,16.7 8.9,17.1 9.6,17.4L9,19.4C8,19 7.1,18.4 6.3,17.6Z"/>
+                        </svg>
+                        <p>环保生产</p>
+                    </div>
+                    <div class="sustainability-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M21.82,15.42L19.32,19.75C18.83,20.61 17.92,21.06 17,21H15V23L12.5,18.5L15,14V16H17.82L15.6,12.15L19.93,9.65L21.73,12.77C22.25,13.54 22.32,14.57 21.82,15.42M9.21,3.06H14.21C15.19,3.06 16.04,3.63 16.45,4.45L17.45,6.19L19.18,5.19L16.54,9.6L11.39,9.69L13.12,8.69L11.71,6.24L9.5,10.09L5.16,7.59L6.96,4.47C7.37,3.64 8.22,3.06 9.21,3.06M5.05,19.76L2.55,15.43C2.06,14.58 2.13,13.56 2.64,12.79L3.64,11.06L1.91,10.06L7.05,10.14L9.7,14.56L7.97,13.56L6.56,16H11V21H7.4C6.47,21.07 5.55,20.61 5.05,19.76Z"/>
+                        </svg>
+                        <p>可回收包装</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>客户服务</h3>
+                    <ul>
+                        <li><a href="#">常见问题</a></li>
+                        <li><a href="#">配送信息</a></li>
+                        <li><a href="#">退换政策</a></li>
+                        <li><a href="#">联系我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>关于我们</h3>
+                    <ul>
+                        <li><a href="#">品牌故事</a></li>
+                        <li><a href="#">可持续发展</a></li>
+                        <li><a href="#">材料工艺</a></li>
+                        <li><a href="#">企业责任</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>商店</h3>
+                    <ul>
+                        <li><a href="#">全部产品</a></li>
+                        <li><a href="#">床品系列</a></li>
+                        <li><a href="#">毛巾浴巾</a></li>
+                        <li><a href="#">家居装饰</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>关注我们</h3>
+                    <ul>
+                        <li><a href="#">微信</a></li>
+                        <li><a href="#">微博</a></li>
+                        <li><a href="#">小红书</a></li>
+                        <li><a href="#">Instagram</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 a domo mio 阿多米多. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
